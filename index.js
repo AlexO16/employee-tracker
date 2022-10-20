@@ -91,25 +91,33 @@ function viewDepartments() {
     connect.query('SELECT department.id AS id, department.name AS department FROM department', function (err, results){
         if (err) throw err;
         console.table(results);
+        loadMainPrompts()
     })
     
 };
 
 function viewRoles() {
     console.log('Showing all roles')
-    connect.query('SELECT role.id, role.title, department.name AS department, role.salary FROM role INNER JOIN department ON role.department_id = department.id', function (err, results){
+    connect.query(
+        `SELECT role.id, role.title, department.name AS department, role.salary 
+        FROM role 
+        INNER JOIN department ON role.department_id = department.id`, function (err, results){
         if (err) throw err;
         console.table(results);
-        //loadMainPrompts()
+        loadMainPrompts()
     })
 };
 
 function viewEmployees() {
     console.log('Showing all employees')
-    connect.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, manager_id AS manager FROM employee INNER JOIN role ON employee.role_id = role.id INNER JOIN department ON role.department_id = department.id', function (err, results){
+    connect.query(
+        `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, manager_id AS manager 
+        FROM employee 
+        INNER JOIN role ON employee.role_id = role.id 
+        INNER JOIN department ON role.department_id = department.id`, function (err, results){
         if (err) throw err;
         console.table(results);
-        //loadMainPrompts()
+        loadMainPrompts()
     })
 };
 
