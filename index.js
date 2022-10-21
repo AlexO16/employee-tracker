@@ -215,7 +215,7 @@ function addEmployee() {
             let empChoice = results.map((employee) => {
                 return {
                     name: employee.first_name + ' ' + employee.last_name,
-                    value: employee.manager.id
+                    value: employee.id
                 }
            })
          inquirer.prompt([
@@ -290,7 +290,7 @@ function updateEmployee() {
             ).then((answer) => {
                 //console.log(answer)
                 connect.query
-                (`UPDATE employee SET role_id=${answer.roleChoice} WHERE id=${answer.empUpdate}`, err, result => {
+                (`UPDATE employee SET role_id = ${answer.roleUpdate} WHERE id = ${answer.empUpdate}`, err, result => {
                     if (err) throw err
                     viewEmployees()
                 })
