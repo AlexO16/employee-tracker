@@ -2,7 +2,7 @@
   # Employee Tracker
   
   # Description
-  Employee Tracker is a command-line app that can display a company's database and update it. When using node in the integrated terminal the user is prompted with an array of options. The user can then select to view all the departments, roles or employees and all the information is displayed in a table. The user can add a new department, role or employee and the information is updated and displayed after the questions have been answered. The user can also update an employee's role.
+  Employee Tracker is a command-line app that can display a company's database and update it. When using node in the integrated terminal the user is prompted with an array of options. The user can then select to view all the departments, roles or employees and all the information is displayed in a table. The user can add a new department, role or employee and the information is updated and displayed after the questions have been answered. The user can also update an employee's role. The user can also remove a department, role or employee from the database.
 
   # Table of Contents:
   * [Screenshot](#screenshot)
