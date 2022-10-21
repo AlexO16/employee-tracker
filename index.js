@@ -58,7 +58,9 @@ function loadMainPrompts() {
                 'Add a role',
                 'Add an employee',
                 'Update an employee',
-                'Delete a department',
+                'Remove a department',
+                'Remove a role',
+                'Remove an employee',
                 'Exit',
             ]
         })
@@ -94,8 +96,16 @@ function loadMainPrompts() {
                     updateEmployee();
                     break;
             
-                case 'Delete a department':
+                case 'Remove a department':
                     deleteDepartment();
+                    break;
+
+                case 'Remove a role':
+                    deleteRole();
+                    break;
+
+                case 'Remove an employee':
+                    deleteEmployee();
                     break;
 
                 default: 'Exit'
@@ -321,15 +331,71 @@ function deleteDepartment() {
     inquirer.prompt([
         {
             type: 'list',
-            message: 'Which department would you like to delete?',
+            message: 'Which department would you like to remove?',
             name: 'delDep',
             choices: depChoice
         }
     ])
     .then(answer => {
-        connect.query(`DELETE FROM department WHERE (?)`, answer.delDep, (err, results) => {
+        connect.query(`DELETE FROM department WHERE id = (?)`, answer.delDep, (err, results) => {
             if (err) throw err
             viewDepartments()
+        })
+    })
+  })
+};
+
+function deleteRole() {
+    connect.query('SELECT * FROM role', function (err, results){
+        if (err) throw err;
+        //console.log(results)
+        let roleChoice = results.map((role) =>{
+            return {
+                name: role.title,
+                value: role.id
+            };
+        })
+    
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which role would you like to remove?',
+            name: 'delRole',
+            choices: roleChoice
+        }
+    ])
+    .then(answer => {
+        connect.query(`DELETE FROM role WHERE id = (?)`, answer.delRole, (err, results) => {
+            if (err) throw err
+            viewRoles()
+        })
+    })
+  })
+};
+
+function deleteEmployee() {
+    connect.query('SELECT * FROM employee', function (err, results){
+        if (err) throw err;
+        //console.log(results)
+        let empChoice = results.map((employee) =>{
+            return {
+                name: employee.first_name + ' ' + employee.last_name,
+                value: employee.id
+            };
+        })
+    
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which employee would you like to remove?',
+            name: 'delEmp',
+            choices: empChoice
+        }
+    ])
+    .then(answer => {
+        connect.query(`DELETE FROM employee WHERE id = (?)`, answer.delEmp, (err, results) => {
+            if (err) throw err
+            viewEmployees()
         })
     })
   })
