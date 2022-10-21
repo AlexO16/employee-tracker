@@ -58,6 +58,7 @@ function loadMainPrompts() {
                 'Add a role',
                 'Add an employee',
                 'Update an employee',
+                'Delete a department',
                 'Exit',
             ]
         })
@@ -91,6 +92,10 @@ function loadMainPrompts() {
 
                 case 'Update an employee':
                     updateEmployee();
+                    break;
+            
+                case 'Delete a department':
+                    deleteDepartment();
                     break;
 
                 default: 'Exit'
@@ -210,7 +215,6 @@ function addEmployee() {
             }
         })
 
-        
         connect.query('SELECT employee.id AS value, CONCAT(employee.first_name, " ", employee.last_name) AS name FROM employee WHERE manager_id IS NULL', function (err, empChoice) {
             if (err) throw err;
             // console.log(results)
@@ -303,8 +307,32 @@ function updateEmployee() {
 };
 
 
-// function deleteDepartment() {
-
-// }
+function deleteDepartment() {
+    connect.query('SELECT * FROM department', function (err, results){
+        if (err) throw err;
+        //console.log(results)
+        let depChoice = results.map((department) =>{
+            return {
+                name: department.name,
+                value: department.id
+            };
+        })
+    
+    inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which department would you like to delete?',
+            name: 'delDep',
+            choices: depChoice
+        }
+    ])
+    .then(answer => {
+        connect.query(`DELETE FROM department WHERE (?)`, answer.delDep, (err, results) => {
+            if (err) throw err
+            viewDepartments()
+        })
+    })
+  })
+};
 
 init();
