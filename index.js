@@ -209,29 +209,32 @@ function addEmployee() {
                 value: role.id
             }
         })
-        connect.query('SELECT manager_id FROM employee', function (err, results) {
+
+        
+        connect.query('SELECT employee.id AS value, CONCAT(employee.first_name, " ", employee.last_name) AS name FROM employee WHERE manager_id IS NULL', function (err, empChoice) {
             if (err) throw err;
-            //console.log(results)
-            let empChoice = results.map((employee) => {
-                return {
-                    name: employee.first_name + ' ' + employee.last_name,
-                    value: employee.id
-                }
-           })
+            // console.log(results)
+            // let empChoice = results.map((employee) => {
+            //     return {
+            //         name: employee.first_name + ' ' + employee.last_name,
+            //         value: employee.id
+            //     }
+            // })
+            
          inquirer.prompt([
         {
             type: 'input',
-            message: 'What is the employees first name?',
+            message: "What is the employee's first name?",
             name: 'empFirstName',
         },
         {
             type: 'input',
-            message: 'What is the employees last name?',
+            message: "What is the employee's last name?",
             name: 'empLastName',
         },
         {
             type: 'list',
-            message: 'What is the employees role?',
+            message: "What is the employee's role?",
             name: 'empRole',
             choices: roleChoice,
         },
